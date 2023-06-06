@@ -142,7 +142,7 @@ public abstract class ValidationAction implements Action {
      * @param domain the bot's domain.
      * @return A list of slot names.
      */
-    private List<String> requiredSlots(List<String> domainSlots, CollectingDispatcher dispatcher, Tracker tracker, Domain domain) {
+    protected List<String> requiredSlots(List<String> domainSlots, CollectingDispatcher dispatcher, Tracker tracker, Domain domain) {
         return domainSlots;
     }
 
