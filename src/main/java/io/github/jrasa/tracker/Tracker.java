@@ -3,12 +3,17 @@ package io.github.jrasa.tracker;
 import io.github.jrasa.common.BeanUtils;
 import io.github.jrasa.common.ReversibleArrayList;
 import io.github.jrasa.event.Event;
+import io.github.jrasa.event.SlotSet;
 import io.github.jrasa.event.UserUttered;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Tracker {
     private static final String SHOULD_NOT_BE_SET = "should_not_be_set";
+    private static final String NLU_FALLBACK_INTENT_NAME = "nlu_fallback";
 
     /** ID of the source of the messages */
     private final String senderId;
@@ -125,5 +130,79 @@ public class Tracker {
 
     public Message getLatestMessage() {
         return BeanUtils.deepCopy(this.latestMessage);
+    }
+
+    public void updateSlots(Map<String, Object> slots) {
+        this.slots.putAll(slots);
+    }
+
+    /**
+     * Get slots which were recently set.
+     * This can e.g. be used to validate form slots after they were extracted.
+     *
+     * @return A mapping of extracted slot candidates and their values.
+     */
+    public Map<String, Object> slotsToValidate() {
+        Map<String, Object> slots = new HashMap<>();
+        int cnt = 0;
+        for (Event event : this.events.reversed()) {
+            if ("slot".equals(event.getEvent())) {
+                cnt += 1;
+            } else {
+                break;
+            }
+        }
+
+        for (Event event : this.events.subList(this.events.size() - cnt, this.events.size())) {
+            SlotSet slotSet = (SlotSet) event;
+            slots.put(slotSet.getName(), slotSet.getValue());
+        }
+        
+        return slots;
+    }
+
+    /**
+     * Adds slots to the current tracker.
+     *
+     * @param slots {@link SlotSet} events.
+     */
+    public void addSlots(List<SlotSet> slots) {
+        for (SlotSet slotSet : slots) {
+            this.slots.put(slotSet.getName(), slotSet.getValue());
+            this.events.add(slotSet);
+        }
+    }
+
+    public String getIntentOfLatestMessage() {
+        return this.getIntentOfLatestMessage(true);
+    }
+
+    /**
+     * Retrieves the intent the last user message.
+     *
+     * @param skipFallbackIntent Optionally skip the nlu_fallback intent and return the next.
+     * @return Intent of latest message if available.
+     */
+    public String getIntentOfLatestMessage(boolean skipFallbackIntent) {
+        Message latestMessage = this.latestMessage;
+        if (null == latestMessage) {
+            return null;
+        }
+
+        List<Intent> intentRanking = latestMessage.getIntentRanking();
+        if (null == intentRanking || intentRanking.isEmpty()) {
+            return null;
+        }
+
+        Intent highestRankingIntent = intentRanking.get(0);
+        if (NLU_FALLBACK_INTENT_NAME.equals(highestRankingIntent.getName()) && skipFallbackIntent) {
+            if (intentRanking.size() >= 2) {
+                return intentRanking.get(1).getName();
+            } else {
+                return null;
+            }
+        } else {
+            return highestRankingIntent.getName();
+        }
     }
 }

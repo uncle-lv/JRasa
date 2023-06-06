@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 public class ActionResponse {
-    private List<Event> events;
+    private List<? extends Event> events;
 
     @JsonProperty("responses")
     private List<Message> messages;

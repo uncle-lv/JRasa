@@ -32,7 +32,7 @@ public interface Action {
      * @param domain the bot's domain.
      * @return A list of {@link Event} instances that is returned through the endpoint.
      */
-    List<Event> run(CollectingDispatcher dispatcher, Tracker tracker, Domain domain) throws RejectExecuteException;
+    List<? extends Event> run(CollectingDispatcher dispatcher, Tracker tracker, Domain domain) throws RejectExecuteException;
 
     /**
      * Returns an empty list (immutable).

@@ -30,12 +30,12 @@ public class ActionExecutor {
             Tracker tracker = Tracker.createTracker(trackerState);
             Domain domain = actionCall.getDomain();
             CollectingDispatcher dispatcher = new CollectingDispatcher();
-            List<Event> events = action.run(dispatcher, tracker, domain);
+            List<? extends Event> events = action.run(dispatcher, tracker, domain);
             if (null == events) {
                 events = Collections.emptyList();
             }
             log.debug("Finished running '{}'", actionName);
-            return new ActionResponse(events, dispatcher.getMessages());
+            return new ActionResponse(events, null == dispatcher.getMessages() ? Collections.emptyList() : dispatcher.getMessages());
         }
         log.warn("Received an action call without an action.");
         return null;
