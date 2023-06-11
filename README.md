@@ -116,13 +116,154 @@ dispatcher.utterMessage(message);
 
 All events are subclasses of abstract class [Event](https://github.com/uncle-lv/JRasa/blob/main/src/main/java/io/github/jrasa/event/Event.java). Their properties are the same as in the documentation. Some of them which have too many  properties should been build with Builder.
 
+##### SlotSet
+
+```java
+SlotSet SlotSet = new SlotSet("name", "John");
+```
+
+
+
+##### AllSlotsReset
+
+```java
+AllSlotsReset allSlotsReset = new AllSlotsReset();
+```
+
+
+
+##### ReminderScheduled
+
+```java
+ReminderScheduled reminderScheduled = ReminderScheduled.builder("my_intent")
+        .name("my_reminder")
+        .killOnUserMessage(true)
+        .entities(new ArrayList<Entity>(){{
+            add(Entity.builder().entity("entity1", "value1").build());
+            add(Entity.builder().entity("entity2", "value2").build());
+        }})
+        .triggerDateTime(LocalDateTime.parse("2018-09-03T11:41:10.128172", DateTimeFormatter.ISO_LOCAL_DATE_TIME))
+        .timestamp(1647918747.678634)
+        .build();
+```
+
+
+
+##### ReminderCancelled
+
+```java
+ReminderCancelled reminderCancelled = ReminderCancelled.builder()
+                .intentName("my_intent")
+                .name("my_reminder")
+                .entities(new ArrayList<Entity>(){{
+                    add(Entity.builder().entity("entity1", "value1").build());
+                    add(Entity.builder().entity("entity2", "value2").build());
+                }})
+                .timestamp(1647918747.678634)
+                .build();
+```
+
+
+
+##### ConversationPaused
+
+```java
+ConversationPaused conversationPaused = new ConversationPaused();
+```
+
+
+
+##### ConversationResumed
+
+```java
+ConversationResumed conversationResumed = new ConversationResumed();
+```
+
+
+
+##### FollowupAction
+
+```java
+FollowupAction followupAction = new FollowupAction("action_listen");
+```
+
+
+
+##### UserUtteranceReverted
+
+```java
+UserUtteranceReverted userUtteranceReverted = new UserUtteranceReverted();
+```
+
+
+
+##### ActionReverted
+
+```java
+ActionReverted actionReverted = new ActionReverted();
+```
+
+
+
+##### Restarted
+
+```java
+Restarted restarted = new Restarted();
+```
+
+
+
+##### SessionStarted
+
+```java
+SessionStarted sessionStarted = new SessionStarted();
+```
+
+
+
+##### UserUttered
+
+```java
+UserUttered userUttered = UserUttered.builder()
+                .text("Hello")
+                .inputChannel("rest")
+                .parseData(Collections.emptyMap())
+                .timestamp(1647918747.678634)
+                .build();
+```
+
+
+
+##### BotUttered
+
+```java
+BotUttered botUttered = BotUttered.builder()
+                .text("Hi there! How can I help you today?")
+                .data(Collections.emptyMap())
+                .metaData(Collections.emptyMap())
+                .timestamp(1647918747.678634)
+                .build();
+```
+
+
+
+##### ActionExecuted
+
+```java
+ActionExecuted actionExecuted = ActionExecuted.builder("utter_greet")
+                .timestamp(1647918747.678634)
+                .policy(null)
+                .confidence(null)
+                .build();
+```
+
 
 
 #### Special Action Types
 
 ##### Knowledge Base Actions
 
-Not implemented yet.
+🛠️ Not implemented yet.
 
 
 
@@ -130,7 +271,7 @@ Not implemented yet.
 
 There is only one difference from the official SDK.
 
-The methods/functions are named `validate_<slot_name>`/`extract_<slot name>`(snake case) in the official SDK. In JRasa, they should be named `validate<SlotName>`/`extract<SlotName>`(camel case), just like convention in Java.
+The methods/functions are named `validate_<slot_name>`/`extract_<slot name>`(snake case) in the official SDK. In JRasa, they should be named `validate<SlotName>`/`extract<SlotName>`(camel case), as naming convention in Java.
 
 
 
