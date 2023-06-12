@@ -11,6 +11,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Maintains the state of a conversation.
+ *
+ * @author uncle-lv
+ */
 public class Tracker {
     private static final String SHOULD_NOT_BE_SET = "should_not_be_set";
     private static final String NLU_FALLBACK_INTENT_NAME = "nlu_fallback";
@@ -39,22 +44,37 @@ public class Tracker {
     /** The name of the previously executed action or text of e2e action */
     private final String latestActionName;
 
+    /**
+     * Retrieves the value of a string slot.
+     */
     public String getStringSlot(String key) {
         return this.getSlot(key, String.class);
     }
 
+    /**
+     * Retrieves the value of a boolean slot.
+     */
     public Boolean getBoolSlot(String key) {
         return this.getSlot(key, Boolean.class);
     }
 
+    /**
+     * Retrieves the value of a double slot.
+     */
     public Double getDoubleSlot(String key) {
         return this.getSlot(key, Double.class);
     }
 
+    /**
+     * Retrieves the value of a slot.
+     */
     public Object getSlot(String key) {
         return this.getSlot(key, Object.class);
     }
 
+    /**
+     * Retrieves the value of a type slot.
+     */
     public <T> T getSlot(String key, Class<T> type) {
         if (null == this.slots || !this.slots.containsKey(key)) {
             return null;
@@ -62,6 +82,9 @@ public class Tracker {
         return type.cast(this.slots.get(key));
     }
 
+    /**
+     * Get the name of the input_channel of the latest UserUttered event.
+     */
     public String getLatestInputChannel() {
         for (Event event : this.events.reversed()) {
             if ("user".equals(event.getEvent())) {
@@ -88,7 +111,7 @@ public class Tracker {
      * Create a {@link Tracker} from {@link TrackerState}.
      *
      * @param trackerState A {@link TrackerState} from request
-     * @return A {@link Tracker} instance
+     * @return a {@link Tracker} instance
      */
     public static Tracker createTracker(TrackerState trackerState) {
         return new Tracker(
@@ -112,6 +135,11 @@ public class Tracker {
         this.latestActionName = latestActionName;
     }
 
+    /**
+     * Get the name of the currently active loop.
+     *
+     * @return null if no active loop or the name of the currently active loop.
+     */
     public String getActiveLoopName() {
         if (null == this.activeLoop) {
             return null;
@@ -124,6 +152,9 @@ public class Tracker {
         return this.activeLoop.getName();
     }
 
+    /**
+     * State whether the tracker is currently paused.
+     */
     public boolean isPaused() {
         return null != this.paused && this.paused;
     }
@@ -140,7 +171,7 @@ public class Tracker {
      * Get slots which were recently set.
      * This can e.g. be used to validate form slots after they were extracted.
      *
-     * @return A mapping of extracted slot candidates and their values.
+     * @return a mapping of extracted slot candidates and their values.
      */
     public Map<String, Object> slotsToValidate() {
         Map<String, Object> slots = new HashMap<>();
@@ -173,6 +204,12 @@ public class Tracker {
         }
     }
 
+    /**
+     * Retrieves the intent the last user message.
+     * skipFallbackIntent is true by default.
+     *
+     * @return Intent of latest message if available.
+     */
     public String getIntentOfLatestMessage() {
         return this.getIntentOfLatestMessage(true);
     }
@@ -204,5 +241,13 @@ public class Tracker {
         } else {
             return highestRankingIntent.getName();
         }
+    }
+
+    public Tracker deepCopy() {
+        return new Tracker(
+                this.senderId, BeanUtils.deepCopy(this.slots), BeanUtils.deepCopy(this.latestMessage),
+                BeanUtils.deepCopy(this.events), this.isPaused(), this.followupAction, this.activeLoop,
+                this.latestActionName
+        );
     }
 }

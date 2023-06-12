@@ -136,11 +136,11 @@ public abstract class ValidationAction implements Action {
     /**
      * Returns slots which the validation action should fill.
      *
-     * @param domainSlots Names of slots of this form which were mapped in the domain.
+     * @param domainSlots names of slots of this form which were mapped in the domain.
      * @param dispatcher the dispatcher which is used to send messages back to the user.
      * @param tracker the conversation tracker for the current user.
      * @param domain the bot's domain.
-     * @return A list of slot names.
+     * @return a list of slot names.
      */
     protected List<String> requiredSlots(List<String> domainSlots, CollectingDispatcher dispatcher, Tracker tracker, Domain domain) {
         return domainSlots;

@@ -13,6 +13,11 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A representation of the response.
+ *
+ * @author uncle-lv
+ */
 @Getter
 @Builder
 @EqualsAndHashCode

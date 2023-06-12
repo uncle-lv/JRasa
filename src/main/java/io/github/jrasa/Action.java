@@ -17,7 +17,7 @@ public interface Action {
     /**
      * Unique identifier of this action.
      *
-     * @return Unique identifier of this simple action.
+     * @return unique identifier of this simple action.
      */
     String name();
 
@@ -30,7 +30,7 @@ public interface Action {
      *                You can access slot values using {@link Tracker#getSlot(String key)},
      *                the most recent user message is {@link Tracker#getLatestMessage()} and any other {@link Tracker} property.
      * @param domain the bot's domain.
-     * @return A list of {@link Event} instances that is returned through the endpoint.
+     * @return a list of {@link Event} instances that is returned through the endpoint.
      */
     List<? extends Event> run(CollectingDispatcher dispatcher, Tracker tracker, Domain domain) throws RejectExecuteException;
 
@@ -38,7 +38,7 @@ public interface Action {
      * Returns an empty list (immutable).
      * Using it when you no {@link Event} is returned.
      *
-     * @return An empty immutable list.
+     * @return an empty immutable list.
      */
     static List<Event> empty() {
         return Collections.emptyList();

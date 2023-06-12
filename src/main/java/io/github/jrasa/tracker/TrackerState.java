@@ -7,6 +7,11 @@ import lombok.*;
 
 import java.util.List;
 
+/**
+ * A representation of the state of a conversation.
+ *
+ * @author uncle-lv
+ */
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
