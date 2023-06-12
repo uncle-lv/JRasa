@@ -1,7 +1,7 @@
 # JRasa
-![stars](https://img.shields.io/github/stars/uncle-lv/JRasa?style=plastic)  ![issues](https://img.shields.io/github/issues/uncle-lv/JRasa?style=plastic) ![forks](https://img.shields.io/github/forks/uncle-lv/JRasa?style=plastic) ![license](https://img.shields.io/github/license/uncle-lv/JRasa?style=plastic) ![JDK8](https://img.shields.io/badge/JDK-8-important)
+![stars](https://img.shields.io/github/stars/uncle-lv/JRasa?style=plastic)  ![issues](https://img.shields.io/github/issues/uncle-lv/JRasa?style=plastic) ![forks](https://img.shields.io/github/forks/uncle-lv/JRasa?style=plastic) ![license](https://img.shields.io/github/license/uncle-lv/JRasa?style=plastic) ![JDK8](https://img.shields.io/badge/JDK-8-important)  ![Rasa](https://img.shields.io/badge/Rasa-3.x-%235b13ec)
 
-A Java SDK for [Rasa action server](https://rasa.com/docs/rasa/action-server)
+A Java SDK for [Rasa action server](https://rasa.com/docs/rasa/action-server).
 
 
 
@@ -17,9 +17,17 @@ A Java SDK for [Rasa action server](https://rasa.com/docs/rasa/action-server)
 
 
 
+## Compatibility
+
+Rasa: >=3.x
+
+
+
 ## Usage
 
-I don't repeat the concepts about the Rasa SDK. So you should read [the Rasa SDK documentation](https://rasa.com/docs/rasa/action-server) first.
+You should read [the Rasa SDK documentation](https://rasa.com/docs/rasa/action-server) first to figure out the fundamental concepts.
+
+
 
 ### Running a Rasa SDK Action Server
 
@@ -88,9 +96,9 @@ With `<T> T getSlot(String key, Class<T> type)`, you can assign the type of slot
 
 #### Dispatcher
 
-There is a [Message](https://github.com/uncle-lv/JRasa/blob/main/src/main/java/io/github/jrasa/message/Message.java) class to represent responses, because methods have no default value parameters in Java.
+There is a [Message](https://github.com/uncle-lv/JRasa/blob/main/src/main/java/io/github/jrasa/message/Message.java) class to represent responses, because methods don't support default value parameters in Java.
 
-You can build a `Message` instance with `Builder` like this:
+You can build a `Message` instance with Builder like this:
 
 ```java
 Message message = Message.builder()
@@ -114,7 +122,9 @@ dispatcher.utterMessage(message);
 
 #### Events
 
-All events are subclasses of abstract class [Event](https://github.com/uncle-lv/JRasa/blob/main/src/main/java/io/github/jrasa/event/Event.java). Their properties are the same as in the documentation. Some of them which have too many  properties should been build with Builder.
+All events are subclasses of abstract class [Event](https://github.com/uncle-lv/JRasa/blob/main/src/main/java/io/github/jrasa/event/Event.java). Their properties are the same as in the documentation. Some of them with many  properties should been build with Builder.
+
+
 
 ##### SlotSet
 
