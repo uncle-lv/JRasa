@@ -30,7 +30,7 @@ public abstract class FormValidationAction extends ValidationAction {
      * Sets the next slot which should be requested.
      * Skips setting the next requested slot in case missing slots was not overridden.
      *
-     * @param dispatcher dispatcher: the dispatcher which is used to end messages back to the user.
+     * @param dispatcher the dispatcher which is used to send messages back to the user.
      * @param tracker the conversation tracker for the current user.
      * @param domain the bot's domain.
      * @return null in case missing slots was not overridden and returns null.
