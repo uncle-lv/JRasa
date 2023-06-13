@@ -1,4 +1,4 @@
-package server;
+package examples.springboot;
 
 import io.github.jrasa.exception.ActionNotFoundException;
 import io.github.jrasa.exception.RejectExecuteException;

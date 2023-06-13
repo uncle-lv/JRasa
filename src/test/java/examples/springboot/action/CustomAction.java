@@ -1,4 +1,4 @@
-package server.action;
+package examples.springboot.action;
 
 import io.github.jrasa.Action;
 import io.github.jrasa.CollectingDispatcher;

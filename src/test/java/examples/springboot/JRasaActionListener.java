@@ -1,4 +1,4 @@
-package server;
+package examples.springboot;
 
 import io.github.jrasa.Action;
 import io.github.jrasa.ActionExecutor;
