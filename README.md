@@ -19,7 +19,7 @@ A Java SDK for [Rasa action server](https://rasa.com/docs/rasa/action-server).
 
 ## Compatibility
 
-Rasa: >=3.x
+Rasa: >= 3.x
 
 
 
@@ -31,7 +31,7 @@ You should read [the Rasa SDK documentation](https://rasa.com/docs/rasa/action-s
 
 ### Running a Rasa SDK Action Server
 
-You can run a Rasa SDK Action Server with the Java web framework you like. There is [a SpringBoot demo](https://github.com/uncle-lv/JRasa/tree/main/src/test/java/server) for you.
+You can run a Rasa SDK Action Server with the Java web framework you like. There is [a SpringBoot demo](https://github.com/uncle-lv/JRasa/tree/main/src/test/java/examples/springboot) for you.
 
 
 
@@ -129,7 +129,7 @@ All events are subclasses of abstract class [Event](https://github.com/uncle-lv/
 ##### SlotSet
 
 ```java
-SlotSet SlotSet = new SlotSet("name", "John");
+SlotSet SlotSet = new SlotSet("name", "Mary");
 ```
 
 
@@ -145,15 +145,12 @@ AllSlotsReset allSlotsReset = new AllSlotsReset();
 ##### ReminderScheduled
 
 ```java
-ReminderScheduled reminderScheduled = ReminderScheduled.builder("my_intent")
-        .name("my_reminder")
-        .killOnUserMessage(true)
+ReminderScheduled reminderScheduled = ReminderScheduled.builder("EXTERNAL_dry_plant")
+        .name("remind_water_plants")
         .entities(new ArrayList<Entity>(){{
-            add(Entity.builder().entity("entity1", "value1").build());
-            add(Entity.builder().entity("entity2", "value2").build());
+            add(Entity.builder().entity("plant", "orchid").build());
         }})
-        .triggerDateTime(LocalDateTime.parse("2018-09-03T11:41:10.128172", DateTimeFormatter.ISO_LOCAL_DATE_TIME))
-        .timestamp(1647918747.678634)
+      .triggerDateTime(LocalDateTime.parse("2018-09-03T11:41:10.128172", DateTimeFormatter.ISO_LOCAL_DATE_TIME))
         .build();
 ```
 
@@ -163,13 +160,7 @@ ReminderScheduled reminderScheduled = ReminderScheduled.builder("my_intent")
 
 ```java
 ReminderCancelled reminderCancelled = ReminderCancelled.builder()
-                .intentName("my_intent")
-                .name("my_reminder")
-                .entities(new ArrayList<Entity>(){{
-                    add(Entity.builder().entity("entity1", "value1").build());
-                    add(Entity.builder().entity("entity2", "value2").build());
-                }})
-                .timestamp(1647918747.678634)
+                .name("remind_water_plants")
                 .build();
 ```
 
@@ -194,7 +185,7 @@ ConversationResumed conversationResumed = new ConversationResumed();
 ##### FollowupAction
 
 ```java
-FollowupAction followupAction = new FollowupAction("action_listen");
+FollowupAction followupAction = new FollowupAction("action_say_goodbye");
 ```
 
 
@@ -235,10 +226,7 @@ SessionStarted sessionStarted = new SessionStarted();
 
 ```java
 UserUttered userUttered = UserUttered.builder()
-                .text("Hello")
-                .inputChannel("rest")
-                .parseData(Collections.emptyMap())
-                .timestamp(1647918747.678634)
+                .text("Hello bot")
                 .build();
 ```
 
@@ -248,10 +236,7 @@ UserUttered userUttered = UserUttered.builder()
 
 ```java
 BotUttered botUttered = BotUttered.builder()
-                .text("Hi there! How can I help you today?")
-                .data(Collections.emptyMap())
-                .metaData(Collections.emptyMap())
-                .timestamp(1647918747.678634)
+                .text("Hello user")
                 .build();
 ```
 
@@ -260,10 +245,7 @@ BotUttered botUttered = BotUttered.builder()
 ##### ActionExecuted
 
 ```java
-ActionExecuted actionExecuted = ActionExecuted.builder("utter_greet")
-                .timestamp(1647918747.678634)
-                .policy(null)
-                .confidence(null)
+ActionExecuted actionExecuted = ActionExecuted.builder("action_greet_user")
                 .build();
 ```
 
