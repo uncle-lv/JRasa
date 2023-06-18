@@ -3,7 +3,7 @@
 
 [English](https://github.com/uncle-lv/JRasa/blob/main/README.md) | [中文](https://github.com/uncle-lv/JRasa/blob/main/README_zh.md)
 
-A Java SDK for [Rasa action server](https://rasa.com/docs/rasa/action-server).
+一个Java版的[Rasa SDK](https://rasa.com/docs/rasa/action-server)
 
 
 
@@ -19,29 +19,29 @@ A Java SDK for [Rasa action server](https://rasa.com/docs/rasa/action-server).
 
 
 
-## Compatibility
+## 兼容性
 
-Rasa: >= 3.x
-
-
-
-## Usage
-
-You should read [the Rasa SDK documentation](https://rasa.com/docs/rasa/action-server) first to figure out the fundamental concepts.
+Rasa: >=3.5.1
 
 
 
-### Running a Rasa SDK Action Server
+## 使用方式
 
-You can run a Rasa SDK Action Server with the Java web framework you like. There is [a SpringBoot demo](https://github.com/uncle-lv/JRasa/tree/main/src/test/java/examples/springboot) for you.
+在使用之前，请先阅读[Rasa SDK文档](https://rasa.com/docs/rasa/action-server)，了解Rasa SDK中的基本概念。
 
 
 
-### Writing Custom Actions
+### 运行Rasa SDK Action Server
+
+你可以使用你喜欢的Java web框架来运行Rasa SDK Action Server。 这是一个[SpringBoot](https://github.com/uncle-lv/JRasa/tree/main/src/test/java/server)的示例。
+
+
+
+### 编写自定义Actions
 
 #### Actions
 
- To define a custom action, create a class which implements the interface [Action](https://github.com/uncle-lv/JRasa/blob/main/src/main/java/io/github/jrasa/Action.java). 
+你可以通过实现 [Action](https://github.com/uncle-lv/JRasa/blob/main/src/main/java/io/github/jrasa/Action.java)接口来定义一个自定义action。
 
 ```java
 import io.github.jrasa.Action;
@@ -66,7 +66,7 @@ public class CustomAction implements Action {
 }
 ```
 
-💡 If no events need to be returned, you can use `Action.empty()` to return an empty list.
+💡 如果没有事件可供返回，你可以使用`Action.empty()`返回一个空列表。
 
 
 
@@ -74,9 +74,9 @@ public class CustomAction implements Action {
 
 ##### getSlot
 
-Because Java is a static programming language, you have to assign the type when you get a slot value.
+因为Java是静态编程语言，所以你必须指定你要获取的slot的值的类型。
 
-There is five methods to get a slot value:
+目前，有五个方法可以用来获取slot的值：
 
 - `Object getSlot(String key)`
 - `<T> T getSlot(String key, Class<T> type)`
@@ -86,21 +86,21 @@ There is five methods to get a slot value:
 
 
 
-`Object getSlot(String key)` can get a slot value of any type.
+`Object getSlot(String key)` 可以获取任意类型的slot值。
 
-With `<T> T getSlot(String key, Class<T> type)`, you can assign the type of slot value.
+你可以使用`<T> T getSlot(String key, Class<T> type)`去获取指定type的slot值。
 
-`String getStringSlot(String key)` `Boolean getBoolSlot(String key)` `Double getDoubleSlot(String key)` can get the common type of slot value.
+`String getStringSlot(String key)` `Boolean getBoolSlot(String key)` `Double getDoubleSlot(String key)` 用于获取常见类型的slot值。
 
-💡 Decimal numbers in JSON are deserialized to double in Java, so double is used instead of float.
+💡 JSON中的小数在反序列时，会被转化为Java中的double类型，所以这里使用了Double而不是Float。
 
 
 
 #### Dispatcher
 
-There is a [Message](https://github.com/uncle-lv/JRasa/blob/main/src/main/java/io/github/jrasa/message/Message.java) class to represent responses, because methods don't support default value parameters in Java.
+因为Java中的方法不支持默认参数，所以这里使用了[Message](https://github.com/uncle-lv/JRasa/blob/main/src/main/java/io/github/jrasa/message/Message.java)类来表示消息响应。
 
-You can build a `Message` instance with Builder like this:
+你可以使用建造者模式来构建一个`Message`实例：
 
 ```java
 Message message = Message.builder()
@@ -114,7 +114,7 @@ Message message = Message.builder()
                 .build();
 ```
 
-And then send it with `utterMessage`:
+然后，使用 `utterMessage`方法发送消息:
 
 ```java
 dispatcher.utterMessage(message);
@@ -124,7 +124,7 @@ dispatcher.utterMessage(message);
 
 #### Events
 
-All events are subclasses of abstract class [Event](https://github.com/uncle-lv/JRasa/blob/main/src/main/java/io/github/jrasa/event/Event.java). Their properties are the same as in the documentation. Some of them with many  properties should been build with Builder.
+所有事件都是抽象类[Event](https://github.com/uncle-lv/JRasa/blob/main/src/main/java/io/github/jrasa/event/Event.java)的子类。事件的属性和官方文档中的相同。一些有较多属性的事件需要用建造者模式构造。
 
 
 
@@ -257,21 +257,21 @@ ActionExecuted actionExecuted = ActionExecuted.builder("action_greet_user")
 
 ##### Knowledge Base Actions
 
-🛠️ Not implemented yet.
+🛠️ 尚未实现。
 
 
 
 ##### Slot Validation Actions
 
-There is only one difference from the official SDK.
+Slot Validation Actions与官方SDK只有一点不同。
 
-The methods/functions are named `validate_<slot_name>`/`extract_<slot name>`(snake case) in the official SDK. In JRasa, they should be named `validate<SlotName>`/`extract<SlotName>`(camel case), as naming convention in Java.
+在官方SDK中，方法/函数被命名为`validate_<slot_name>`/`extract_<slot name>`（下划线命名）。在JRasa中，它们应该遵循Java命名规范，被命名为`validate<SlotName>`/`extract<SlotName>`（驼峰命名）。
 
 
 
 ## Contributions
 
-Thank you for any feedback.
+感谢您的任何反馈。
 
 
 
@@ -281,6 +281,6 @@ Thank you for any feedback.
 
 
 
-## Thanks
+## 鸣谢
 
 - [Rasa](https://github.com/RasaHQ/rasa)
